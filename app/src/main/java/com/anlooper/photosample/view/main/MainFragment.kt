@@ -21,7 +21,6 @@ import com.anlooper.photosample.adapter.PhotoAdapter
 import com.anlooper.photosample.constant.Constant
 import com.anlooper.photosample.constant.FlickrTypeConstant
 import com.anlooper.photosample.network.FlickrModule
-import com.anlooper.photosample.util.createBlurImage
 import com.anlooper.photosample.view.detail.DetailActivity
 import com.anlooper.photosample.view.main.presenter.MainContract
 import com.anlooper.photosample.view.main.presenter.MainPresenter
@@ -31,6 +30,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
+import tech.thdev.base.util.createBlurImage
 import tech.thdev.base.view.BasePresenterFragment
 import java.util.concurrent.TimeUnit
 
@@ -167,8 +167,8 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
 
         presenter?.unSubscribeSearch()
         recyclerView.removeOnScrollListener(InfiniteScrollListener({
-                presenter?.loadPhotos(page)
-            }, recyclerView.layoutManager as StaggeredGridLayoutManager))
+            presenter?.loadPhotos(page)
+        }, recyclerView.layoutManager as StaggeredGridLayoutManager))
     }
 
     override fun initPhotoList() {
