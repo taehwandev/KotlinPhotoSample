@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.anlooper.photosample"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
+
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "FLICKR_API_KEY", rootProject.ext.flickrApiKey
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "FLICKR_API_KEY", rootProject.ext.flickrApiKey
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile(rootProject.ext.espressoCore, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile rootProject.ext.junit
+
+    // Base
+    compile rootProject.ext.base
+
+    compile rootProject.ext.appCompat
+    compile rootProject.ext.design
+    compile rootProject.ext.recyclerView
+
+    compile rootProject.ext.constraintLayout
+
+    // Kotlin
+    compile rootProject.ext.kotlin
+
+    // Network
+    // http://square.github.io/retrofit/
+    compile rootProject.ext.retrofit
+    compile rootProject.ext.retrofitConverterGson
+    compile rootProject.ext.retrofitRxJava
+    // https://github.com/square/okhttp
+    compile rootProject.ext.okhttp
+    compile rootProject.ext.okhttpLoggingInterceptor
+
+    // RX
+    // https://github.com/ReactiveX/RxAndroid
+    compile rootProject.ext.rxAndroid
+    compile rootProject.ext.rxJava
+
+    // Image
+    compile rootProject.ext.glide
+}
