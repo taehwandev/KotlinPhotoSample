@@ -22,19 +22,26 @@ class PhotoAdapter(context: Context) : BaseRecyclerAdapter<Photo>(context), Phot
     fun setLongClickListener(listener: (BaseRecyclerAdapter<*>, Int) -> Boolean) {
         this.longClickListener = object : OnLongClickListener {
             override fun onLongClickListener(baseRecyclerAdapter: BaseRecyclerAdapter<*>, position: Int)
-                = listener(baseRecyclerAdapter, position)
+                    = listener(baseRecyclerAdapter, position)
         }
     }
 
     var onClickListener: OnClickListener? = null
         private set
 
-    fun setOnClickListener(listener: (BaseRecyclerAdapter<*>, Int) -> Unit) {
+    fun setOnClickListener(listener: (BaseRecyclerAdapter<*>, Int) -> Unit, fn: (() -> Unit)? = null) {
         this.onClickListener = object : OnClickListener {
             override fun OnClickListener(baseRecyclerAdapter: BaseRecyclerAdapter<*>, position: Int) {
                 listener(baseRecyclerAdapter, position)
             }
+
+            override fun test() {
+                if (fn != null) {
+                    fn()
+                }
+            }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseRecyclerViewHolder<Photo>

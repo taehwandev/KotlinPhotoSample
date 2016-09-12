@@ -8,4 +8,6 @@ import tech.thdev.base.adapter.BaseRecyclerAdapter
 interface OnClickListener {
 
     fun OnClickListener(baseRecyclerAdapter: BaseRecyclerAdapter<*>, position: Int)
+
+    fun test()
 }

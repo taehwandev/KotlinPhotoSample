@@ -68,9 +68,9 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
             presenter?.updateLongClickItem(i) ?: false
         }
 
-        adapter?.setOnClickListener { baseRecyclerAdapter, i ->
-            presenter?.loadDetailView(i)
-        }
+        adapter?.setOnClickListener(
+                { baseRecyclerAdapter, i -> presenter?.loadDetailView(i) },
+                { Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show() })
 
         recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView
         recyclerView.addOnScrollListener(InfiniteScrollListener({ presenter!!.loadPhotos(page) },
