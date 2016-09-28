@@ -12,7 +12,7 @@ ext {
 
 
     // Dependencies version
-    base = '1.0.3'
+    base = '1.0.4'
 
     supportLibraryVersion = '24.2.1'
     constraintLayoutVersion = '1.0.0-alpha8'

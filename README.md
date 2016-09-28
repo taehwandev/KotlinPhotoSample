@@ -24,17 +24,17 @@ Using the Flickr API shows the photo.
 - compile sdk version = 24
 - Target sdk version = 24
 - Min sdk version = 16
-- Android studio 2.2 RC
+- Android studio 2.2
 
 
 ## Use Library version
 - Base library
-    - thdev support base version = 1.0.2
+    - thdev support base version = 1.0.4
 - Kotlin library
-    - Kotlin version = 1.0.3
+    - Kotlin version = 1.0.4
 - Android support library
-    - support libraryVersion = 24.2.0
-    - constraint layout version = 1.0.0-alpha7
+    - support libraryVersion = 24.2.1
+    - constraint layout version = 1.0.0-alpha8
 - Image library
     - Glide version = 3.7.0
 - Network library

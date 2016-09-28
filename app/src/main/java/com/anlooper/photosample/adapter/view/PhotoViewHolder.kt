@@ -3,11 +3,11 @@ package com.anlooper.photosample.adapter.view
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.anlooper.photosample.R
-import com.anlooper.photosample.adapter.BaseRecyclerAdapter
-import com.anlooper.photosample.adapter.BaseRecyclerViewHolder
 import com.anlooper.photosample.adapter.PhotoAdapter
 import com.anlooper.photosample.data.Photo
 import com.bumptech.glide.Glide
+import tech.thdev.base.adapter.BaseRecyclerAdapter
+import tech.thdev.base.adapter.BaseRecyclerViewHolder
 
 /**
  * Created by Tae-hwan on 7/22/16.

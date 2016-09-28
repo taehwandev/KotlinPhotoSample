@@ -7,6 +7,8 @@ import com.anlooper.photosample.adapter.view.PhotoViewHolder
 import com.anlooper.photosample.data.Photo
 import com.anlooper.photosample.listener.OnClickListener
 import com.anlooper.photosample.listener.OnLongClickListener
+import tech.thdev.base.adapter.BaseRecyclerAdapter
+import tech.thdev.base.adapter.BaseRecyclerViewHolder
 
 /**
  * Created by Tae-hwan on 7/22/16.
