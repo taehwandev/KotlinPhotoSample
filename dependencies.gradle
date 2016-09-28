@@ -14,10 +14,10 @@ ext {
     // Dependencies version
     base = '1.0.3'
 
-    supportLibraryVersion = '24.2.0'
-    constraintLayoutVersion = '1.0.0-alpha7'
+    supportLibraryVersion = '24.2.1'
+    constraintLayoutVersion = '1.0.0-alpha8'
 
-    kotlinVersion = '1.0.3'
+    kotlinVersion = '1.0.4'
 
     retrofitVersion = '2.1.0'
     okhttpVersion = '3.3.1'

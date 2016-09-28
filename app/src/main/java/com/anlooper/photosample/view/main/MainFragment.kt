@@ -3,7 +3,6 @@ package com.anlooper.photosample.view.main
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.CoordinatorLayout
@@ -39,17 +38,31 @@ import java.util.concurrent.TimeUnit
  */
 class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Presenter>(), MainContract.View {
 
-    private var loading: Boolean = false
+    private var isLoading: Boolean = false
     private var page: Int = 0
 
     private var adapter: PhotoAdapter? = null
-    private lateinit var recyclerView: RecyclerView
 
-    private var clBlur: ConstraintLayout? = null
-    private var imgBlurBackground: ImageView? = null
-    private var imgView: ImageView? = null
+    private val recyclerView by lazy {
+        view?.findViewById(R.id.recycler_view) as RecyclerView
+    }
 
-    private var containerMain: CoordinatorLayout? = null
+    private val clBlur by lazy {
+        activity?.findViewById(R.id.constraintLayout) as ConstraintLayout
+    }
+
+    private val imgBlurBackground by lazy {
+        activity?.findViewById(R.id.img_blur_background) as ImageView
+    }
+
+    private val imgView by lazy {
+        activity?.findViewById(R.id.img_view) as ImageView
+    }
+
+    private val containerMain by lazy {
+        activity?.findViewById(R.id.container_main) as CoordinatorLayout
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,19 +85,17 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
                 { baseRecyclerAdapter, i -> presenter?.loadDetailView(i) },
                 { Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show() })
 
-        recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView
-        recyclerView.addOnScrollListener(InfiniteScrollListener({ presenter!!.loadPhotos(page) },
+        recyclerView.addOnScrollListener(InfiniteScrollListener({ presenter?.loadPhotos(page) },
                 recyclerView.layoutManager as StaggeredGridLayoutManager))
+
         recyclerView.adapter = adapter
 
-        presenter?.setDataModel(adapter)
+        presenter?.setAdapterModel(adapter)
+        presenter?.setAdapterView(adapter)
+
+        containerMain.isDrawingCacheEnabled = true
+
         initPhotoList()
-
-        clBlur = activity?.findViewById(R.id.constraintLayout) as ConstraintLayout
-        imgBlurBackground = activity?.findViewById(R.id.img_blur_background) as ImageView
-        imgView = activity?.findViewById(R.id.img_view) as ImageView
-
-        containerMain = activity?.findViewById(R.id.container_main) as CoordinatorLayout
     }
 
     override fun showDetailView(imageUrl: String?) {
@@ -94,9 +105,9 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
     }
 
     override fun showBlurDialog(imageUrl: String?) {
-        clBlur?.visibility = View.VISIBLE
-        imgView?.visibility = View.VISIBLE
-        imgBlurBackground?.visibility = View.VISIBLE
+        clBlur.visibility = View.VISIBLE
+        imgView.visibility = View.VISIBLE
+        imgBlurBackground.visibility = View.VISIBLE
 
         drawBackgroundImage()
 
@@ -110,17 +121,21 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
                         Observable.timer(5, TimeUnit.SECONDS)
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe {
-                                    clBlur?.visibility = View.GONE
-                                    imgView?.visibility = View.GONE
-                                    imgBlurBackground?.visibility = View.GONE
+                                    clBlur.visibility = View.GONE
+                                    imgView.setImageResource(0)
+                                    imgView.visibility = View.GONE
+                                    imgBlurBackground.setImageResource(0)
+                                    imgBlurBackground.visibility = View.GONE
                                 }
                         return false
                     }
 
                     override fun onException(e: Exception?, model: String?, target: Target<GlideDrawable>?, isFirstResource: Boolean): Boolean {
-                        clBlur?.visibility = View.GONE
-                        imgView?.visibility = View.GONE
-                        imgBlurBackground?.visibility = View.GONE
+                        clBlur.visibility = View.GONE
+                        imgView.setImageResource(0)
+                        imgView.visibility = View.GONE
+                        imgBlurBackground.setImageResource(0)
+                        imgBlurBackground.visibility = View.GONE
 
                         Toast.makeText(context, "Image load fail", Toast.LENGTH_SHORT).show()
                         return false
@@ -136,30 +151,24 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
      * Root capture...
      */
     private fun drawBackgroundImage() {
-        containerMain?.isDrawingCacheEnabled = true
-        containerMain?.buildDrawingCache(true)
-        val bitmap: Bitmap? = containerMain?.drawingCache
-        bitmap?.createBlurImage(context)?.let {
-            imgBlurBackground?.setImageBitmap(it)
+        containerMain.isDrawingCacheEnabled = true
+        containerMain.buildDrawingCache(true)
+        containerMain.drawingCache.createBlurImage(context)?.let {
+            imgBlurBackground.setImageBitmap(it)
         }
-
-        containerMain?.isDrawingCacheEnabled = false
+        containerMain.isDrawingCacheEnabled = false
     }
 
     override fun showProgress() {
-        loading = true
+        isLoading = true
     }
 
     override fun hideProgress() {
-        loading = false
+        isLoading = false
     }
 
     override fun showFailLoad() {
         Toast.makeText(context, "FAIL", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun refresh() {
-        adapter?.notifyDataSetChanged()
     }
 
     override fun onDestroy() {
@@ -220,7 +229,7 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
                     firstItemNumber = it[0]
                 }
 
-                if (!loading && (firstItemNumber + visibleItemCount) >= totalItemCount - 10) {
+                if (!isLoading && (firstItemNumber + visibleItemCount) >= totalItemCount - 10) {
                     ++page
                     func()
                 }

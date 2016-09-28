@@ -1,6 +1,7 @@
 package com.anlooper.photosample.listener
 
-import tech.thdev.base.adapter.BaseRecyclerAdapter
+import com.anlooper.photosample.adapter.BaseRecyclerAdapter
+
 
 /**
  * Created by Tae-hwan on 8/1/16.

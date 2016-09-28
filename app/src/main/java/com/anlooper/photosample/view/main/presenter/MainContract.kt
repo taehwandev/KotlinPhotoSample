@@ -1,6 +1,6 @@
 package com.anlooper.photosample.view.main.presenter
 
-import com.anlooper.photosample.adapter.model.PhotoDataModel
+import com.anlooper.photosample.adapter.contract.PhotoAdapterContract
 import tech.thdev.base.presenter.BasePresenter
 import tech.thdev.base.presenter.BaseView
 
@@ -12,8 +12,6 @@ interface MainContract {
     interface View : BaseView {
 
         fun showFailLoad()
-
-        fun refresh()
 
         fun showProgress()
 
@@ -31,7 +29,12 @@ interface MainContract {
         /**
          * Adapter setting.
          */
-        fun setDataModel(model: PhotoDataModel?)
+        fun setAdapterModel(model: PhotoAdapterContract.Model?)
+
+        /**
+         * Adapter setting.
+         */
+        fun setAdapterView(view: PhotoAdapterContract.View?)
 
         /**
          * Recent Photos

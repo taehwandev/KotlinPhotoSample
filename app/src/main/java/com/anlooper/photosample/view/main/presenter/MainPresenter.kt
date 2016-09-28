@@ -4,7 +4,7 @@ import android.text.TextUtils
 import com.anlooper.photosample.data.PhotoResponse
 import com.anlooper.photosample.data.SearchData
 import com.anlooper.photosample.network.FlickrModule
-import com.anlooper.photosample.adapter.model.PhotoDataModel
+import com.anlooper.photosample.adapter.contract.PhotoAdapterContract
 import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit
  */
 class MainPresenter(val retrofitFlicker: FlickrModule) : AbstractPresenter<MainContract.View>(), MainContract.Presenter {
 
-    private var model: PhotoDataModel? = null
+    private var adapterModel: PhotoAdapterContract.Model? = null
+    private var adapterView: PhotoAdapterContract.View? = null
 
     private val searchSubject: PublishSubject<SearchData>
     private var searchSubscription: Subscription? = null
@@ -38,8 +39,12 @@ class MainPresenter(val retrofitFlicker: FlickrModule) : AbstractPresenter<MainC
                         { view?.showFailLoad() })
     }
 
-    override fun setDataModel(model: PhotoDataModel?) {
-        this.model = model
+    override fun setAdapterModel(model: PhotoAdapterContract.Model?) {
+        this.adapterModel = model
+    }
+
+    override fun setAdapterView(view: PhotoAdapterContract.View?) {
+        this.adapterView = view
     }
 
     override fun loadPhotos(page: Int) {
@@ -52,7 +57,7 @@ class MainPresenter(val retrofitFlicker: FlickrModule) : AbstractPresenter<MainC
             searchSubscription?.unsubscribe()
         }
 
-        model?.clean()
+        adapterModel?.clear()
 
         initSubscription()
         if (!TextUtils.isEmpty(text)) {
@@ -66,7 +71,7 @@ class MainPresenter(val retrofitFlicker: FlickrModule) : AbstractPresenter<MainC
     private fun loadSearchPhotos(searchData: SearchData?) {
         searchData?.let {
             val photos = retrofitFlicker.getSearchPhotos(it.page, it.safeSearch, it.text)
-            model?.clean()
+            adapterModel?.clear()
             subscribePhoto(photos)
         }
     }
@@ -83,22 +88,22 @@ class MainPresenter(val retrofitFlicker: FlickrModule) : AbstractPresenter<MainC
                     view?.showProgress()
                 }
                 .doOnUnsubscribe {
-                    view?.refresh()
+                    adapterView?.refresh()
                     view?.hideProgress()
                 }
                 .subscribe(
-                        { model?.addItem(it) },
+                        { adapterModel?.addItem(it) },
                         { view?.showFailLoad() })
     }
 
     override fun updateLongClickItem(position: Int): Boolean {
-        val photo = model?.getItem(position)
+        val photo = adapterModel?.getItem(position)
         view?.showBlurDialog(photo?.getImageUrl())
         return true
     }
 
     override fun loadDetailView(position: Int) {
-        val photo = model?.getItem(position)
+        val photo = adapterModel?.getItem(position)
         view?.showDetailView(photo?.getImageUrl())
     }
 

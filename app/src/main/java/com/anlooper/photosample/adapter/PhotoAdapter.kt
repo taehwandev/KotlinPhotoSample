@@ -2,18 +2,16 @@ package com.anlooper.photosample.adapter
 
 import android.content.Context
 import android.view.ViewGroup
-import com.anlooper.photosample.adapter.model.PhotoDataModel
+import com.anlooper.photosample.adapter.contract.PhotoAdapterContract
 import com.anlooper.photosample.adapter.view.PhotoViewHolder
 import com.anlooper.photosample.data.Photo
 import com.anlooper.photosample.listener.OnClickListener
 import com.anlooper.photosample.listener.OnLongClickListener
-import tech.thdev.base.adapter.BaseRecyclerAdapter
-import tech.thdev.base.adapter.BaseRecyclerViewHolder
 
 /**
  * Created by Tae-hwan on 7/22/16.
  */
-class PhotoAdapter(context: Context) : BaseRecyclerAdapter<Photo>(context), PhotoDataModel {
+class PhotoAdapter(context: Context) : BaseRecyclerAdapter<Photo>(context), PhotoAdapterContract.View, PhotoAdapterContract.Model {
 
     var longClickListener: OnLongClickListener? = null
         private set
@@ -41,7 +39,10 @@ class PhotoAdapter(context: Context) : BaseRecyclerAdapter<Photo>(context), Phot
                 }
             }
         }
+    }
 
+    override fun refresh() {
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseRecyclerViewHolder<Photo>
