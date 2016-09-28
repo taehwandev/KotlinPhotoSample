@@ -3,7 +3,7 @@ package com.anlooper.photosample.adapter
 import tech.thdev.base.model.BaseItem
 
 /**
- * Created by rgpkorea on 2016. 9. 28..
+ * Created by taehwan on 2016. 9. 28..
  */
 interface BaseRecyclerModel<ITEM: BaseItem> {
 
