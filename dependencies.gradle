@@ -1,6 +1,6 @@
 ext {
     // Build SDK version
-    buildToolsVersion = '24.0.2'
+    buildToolsVersion = '24.0.3'
     compileSdkVersion = 24
     targetSdkVersion = 24
     minSdkVersion = 16
@@ -15,7 +15,7 @@ ext {
     base = '1.0.4'
 
     supportLibraryVersion = '24.2.1'
-    constraintLayoutVersion = '1.0.0-alpha8'
+    constraintLayoutVersion = '1.0.0-alpha9'
 
     kotlinVersion = '1.0.4'
 
