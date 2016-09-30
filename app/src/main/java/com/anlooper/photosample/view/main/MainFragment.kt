@@ -19,6 +19,7 @@ import com.anlooper.photosample.R
 import com.anlooper.photosample.adapter.PhotoAdapter
 import com.anlooper.photosample.constant.Constant
 import com.anlooper.photosample.constant.FlickrTypeConstant
+import com.anlooper.photosample.data.Photo
 import com.anlooper.photosample.network.FlickrModule
 import com.anlooper.photosample.view.detail.DetailActivity
 import com.anlooper.photosample.view.main.presenter.MainContract
@@ -98,9 +99,9 @@ class MainFragment : BasePresenterFragment<MainContract.View, MainContract.Prese
         initPhotoList()
     }
 
-    override fun showDetailView(imageUrl: String?) {
+    override fun showDetailView(photo: Photo?) {
         val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(Constant.KEY_IMAGE_URL, imageUrl)
+        intent.putExtra(Constant.KEY_PHOTO_DATA, photo)
         startActivity(intent)
     }
 

@@ -5,5 +5,5 @@ package com.anlooper.photosample.constant
  */
 object Constant {
 
-    val KEY_IMAGE_URL = "key-image-url"
+    val KEY_PHOTO_DATA = "key-photo_data"
 }

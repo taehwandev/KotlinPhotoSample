@@ -1,6 +1,7 @@
 package com.anlooper.photosample.view.main.presenter
 
 import com.anlooper.photosample.adapter.contract.PhotoAdapterContract
+import com.anlooper.photosample.data.Photo
 import tech.thdev.base.presenter.BasePresenter
 import tech.thdev.base.presenter.BaseView
 
@@ -21,7 +22,7 @@ interface MainContract {
 
         fun showBlurDialog(imageUrl: String?)
 
-        fun showDetailView(imageUrl: String?)
+        fun showDetailView(photo: Photo?)
     }
 
     interface Presenter : BasePresenter<View> {

@@ -103,8 +103,7 @@ class MainPresenter(val retrofitFlicker: FlickrModule) : AbstractPresenter<MainC
     }
 
     override fun loadDetailView(position: Int) {
-        val photo = adapterModel?.getItem(position)
-        view?.showDetailView(photo?.getImageUrl())
+        view?.showDetailView(adapterModel?.getItem(position))
     }
 
 
