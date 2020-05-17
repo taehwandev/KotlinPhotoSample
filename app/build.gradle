@@ -1,31 +1,28 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion compileSdkVersionInfo
+    buildToolsVersion buildToolsVersionInfo
 
     defaultConfig {
-        applicationId "com.anlooper.photosample"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        applicationId "app.thdev.photosample"
+        minSdkVersion minSdkVerisonInfo
+        targetSdkVersion targetSdkVersionInfo
         versionCode 1
         versionName "1.0.0"
 
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            buildConfigField "String", "FLICKR_API_KEY", rootProject.ext.flickrApiKey
+            buildConfigField "String", "FLICKR_API_KEY", flickrApiKey
         }
 
         release {
@@ -34,41 +31,62 @@ android {
             buildConfigField "String", "FLICKR_API_KEY", rootProject.ext.flickrApiKey
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile(rootProject.ext.espressoCore, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile rootProject.ext.junit
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":base")
 
-    // Base
-    compile rootProject.ext.base
+    // kotlin
+    implementation rootProject.ext.kotlin
 
-    compile rootProject.ext.appCompat
-    compile rootProject.ext.design
-    compile rootProject.ext.recyclerView
-
-    compile rootProject.ext.constraintLayout
-
-    // Kotlin
-    compile rootProject.ext.kotlin
+    // library
+    implementation rootProject.ext.appCompat
+    implementation rootProject.ext.material
+    implementation rootProject.ext.constraintLayout
 
     // Network
-    // http://square.github.io/retrofit/
-    compile rootProject.ext.retrofit
-    compile rootProject.ext.retrofitConverterGson
-    compile rootProject.ext.retrofitRxJava
-    // https://github.com/square/okhttp
-    compile rootProject.ext.okhttp
-    compile rootProject.ext.okhttpLoggingInterceptor
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitGson
+    implementation rootProject.ext.retrofitRxJavaAdapter
 
-    // RX
-    // https://github.com/ReactiveX/RxAndroid
-    compile rootProject.ext.rxAndroid
-    compile rootProject.ext.rxJava
+    implementation rootProject.ext.okhttp
+    implementation rootProject.ext.oktthLogging
+
+    // RxJava
+    implementation rootProject.ext.rxJava
+    implementation rootProject.ext.rxAndroid
 
     // Image
-    compile rootProject.ext.glide
+    implementation rootProject.ext.glide
+    kapt rootProject.ext.glideCompiler
+
+    implementation rootProject.ext.thdevSimpleAdapter
+
+
+    // Test
+    testImplementation rootProject.ext.junit
+    testImplementation rootProject.ext.mockito
+    testImplementation rootProject.ext.awaitility
+
+    // UI Test
+    androidTestImplementation rootProject.ext.uiTestJunit
+    androidTestImplementation rootProject.ext.testRunner
+    androidTestImplementation rootProject.ext.testRules
+    androidTestImplementation rootProject.ext.espressoCore
+    androidTestImplementation rootProject.ext.espressoIntents
+    androidTestImplementation rootProject.ext.uiautomator
 }
